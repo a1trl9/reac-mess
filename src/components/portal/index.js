@@ -1,25 +1,30 @@
 import React, {Component} from 'react'
-import ReactDOM, { findDOMNode} from 'react-dom'
+import {
+  unmountComponentAtNode,
+  unstable_renderSubtreeIntoContainer as renderSubtreeIntoContainer
+} from 'react-dom'
 
-class Portal extends Component {
+export default class Portal extends Component {
   componentDidMount() {
-    const {closeOnESC, closeOnOuterClick, isOpen} = this.props
-    if (closeOnESC) {
-      document.addEventListener('keydown', this.handleKeyDown)
-    }
-
-    if (closeOnOuterClick) {
-      document.addEventListener('mouseup', this.handleOuterLick)
-      document.addEventListener('touchstart', this.handleOuterClick)
-    }
-
-    if (isOpen) {
-      this.openPortal()
-    }
+    this.element = document.createElement('div')
+    document.body.appendChild(this.element)
+    this.renderPortal(this.props)
   }
 
-  componentWillReceiveProps(newProps) {
-    if (typeof newProps.isOpen !== 'undefined') {
-    }
+  componentWillReceiveProps(nextProps) {
+    this.renderPortal(nextProps)
+  }
+
+  componentWillUnmount() {
+    unmountComponentAtNode(this.element)
+    document.body.removeChild(this.element)
+  }
+
+  renderPortal = (props) => {
+    renderSubtreeIntoContainer(this, <div {...props} />, this.element)
+  }
+
+  render() {
+    return null
   }
 }
