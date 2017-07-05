@@ -1,19 +1,58 @@
+.pg-modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .65);
+
+  &.pg-modal {
+    &-appear, &-enter {
+      opacity: .01;
+    }
+
+    &-appear-active, &-enter-active {
+      opacity: 1;
+      transition: opacity 300ms ease-out;
+    }
+
+    &-leave {
+      opacity: 1;
+    }
+
+    &-leave-active {
+      opacity: .01;
+      transition: opacity 300ms ease-out;
+    }
+  }
+}
+
 .pg-modal {
-  &-appear, &-enter {
-    opacity: .01;
+  position: absolute;
+
+  &-fullpage {
+    width: calc(~"100vw - 200px * 2");
+    height: calc(~"100vh - 24px * 2");
+    top: 24px;
+    left: 200px;
+    background: #fff;
   }
 
-  &-appear-active, &-enter-active {
-    opacity: 1;
-    transition: opacity 300ms ease-out;
+  &-appear &, &-enter & {
+    transform: translateY(20px);
   }
 
-  &-leave {
-    opacity: 1;
+  &-appear-active &, &-enter-active & {
+    transform: translateY(0);
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 
-  &-leave-active {
-    opacity: .01;
-    transition: opacity 300ms ease-out;
+  &-leave & {
+    transform: translateY(0);
+  }
+
+  &-leave-active & {
+    transform: translateY(20px);
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 }

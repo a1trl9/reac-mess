@@ -26,6 +26,9 @@ class App extends Component {
         </Button>
         <Modal
           shown={shown}
+          maskClosable
+          onClose={() => this.setState({shown: false})}
+          fullPage
         >
           <Card
             title="This is a Title"
