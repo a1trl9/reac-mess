@@ -1,0 +1,19 @@
+.pg-modal {
+  &-appear, &-enter {
+    opacity: .01;
+  }
+
+  &-appear-active, &-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-out;
+  }
+
+  &-leave {
+    opacity: 1;
+  }
+
+  &-leave-active {
+    opacity: .01;
+    transition: opacity 300ms ease-out;
+  }
+}
