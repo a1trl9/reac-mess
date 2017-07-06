@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import {render} from 'react-dom'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import Modal from '../components/Modal'
 import './index.css'
 
-class App extends Component {
+export default class App extends Component {
   state = {
     shown: false,
   }
@@ -25,6 +24,7 @@ class App extends Component {
           switch
         </Button>
         <Modal
+          title="Modal Title"
           shown={shown}
           maskClosable
           onClose={() => this.setState({shown: false})}
@@ -41,6 +41,3 @@ class App extends Component {
     )
   }
 }
-
-
-render(<App />, document.getElementById('root'))

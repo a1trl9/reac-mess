@@ -11,7 +11,7 @@ function config(isProd) {
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?path=//0.0.0.0:' +
         '3001/__webpack_hmr&overlay=false',
-        path.resolve(__dirname, '../src/app/index.js'),
+        path.resolve(__dirname, '../src/app/entry.js'),
       ],
     },
     output: {
@@ -27,7 +27,7 @@ function config(isProd) {
         minChunks: 2,
       }),
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, '../src/app/index.html'),
+        template: path.resolve(__dirname, '../src/app/entry.html'),
         filename: 'index.html',
         inject: 'body',
       }),

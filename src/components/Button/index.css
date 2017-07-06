@@ -64,3 +64,17 @@
     cursor: not-allowed;
   }
 }
+
+.pg-buttongroup {
+  &-vertical {
+    button + button {
+      margin-top: 12px;
+    }
+  }
+
+  &-horizontal {
+    button + button {
+      margin-left: 12px;
+    }
+  }
+}

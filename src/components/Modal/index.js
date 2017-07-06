@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
+import Button, {ButtonGroup} from '../Button'
 import TransitionPortal from '../TransitionPortal'
 import './index.css'
 
@@ -21,6 +22,7 @@ export default class Modal extends Component {
       title,
       footer,
       children,
+      onSubmit,
       onClose,
       maskClosable,
       ...others
@@ -30,7 +32,29 @@ export default class Modal extends Component {
     const classString = cx(prefixCls, modalClassName, {
       [`${prefixCls}-fullpage`]: fullPage,
     })
-    const wrapperClickProp = maskClosable && onClose ? {onClick: this.handleWrapperClick} : {}
+    const onCloseProp = maskClosable && onClose ? {onClick: this.handleWrapperClick} : {}
+    const onSubmitProp = onSubmit ? {onClick: onSubmit} : {}
+
+    let footerNode = null
+    if (footer) {
+      footerNode = footer
+    } else if (footer === undefined) {
+      footerNode = (
+        <ButtonGroup>
+          <Button
+            type="primary"
+            {...onSubmitProp}
+          >
+            Submit
+          </Button>
+          <Button
+            {...onCloseProp}
+          >
+            Cancel
+          </Button>
+        </ButtonGroup>
+      )
+    }
 
     return (
       <TransitionPortal
@@ -41,14 +65,14 @@ export default class Modal extends Component {
           <div
             key="modal"
             className={wrapperClassString}
-            {...wrapperClickProp}
+            {...onCloseProp}
           >
             <div
               className={classString}
             >
               {title && <div className={`${prefixCls}-title`}>{title}</div>}
               {children}
-              {footer && <div className={`${prefixCls}-footer`}>{footer}</div>}
+              {footerNode && <div className={`${prefixCls}-footer`}>{footerNode}</div>}
             </div>
           </div>
         }
@@ -67,6 +91,7 @@ Modal.propTypes = {
   footer: PropTypes.node,
   closeBtnShown: PropTypes.bool,
   maskClosable: PropTypes.bool,
+  onSubmit: PropTypes.func,
   onClose: PropTypes.func,
 }
 
