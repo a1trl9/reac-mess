@@ -132,5 +132,4 @@ Button.defaultProps = {
   size: 'default',
   htmlType: 'button',
   loading: false,
-  ghost: false,
 }

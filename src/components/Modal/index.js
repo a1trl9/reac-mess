@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import Button, {ButtonGroup} from '../Button'
+import Icon from '../Icon'
 import TransitionPortal from '../TransitionPortal'
 import './index.css'
 
@@ -25,6 +26,7 @@ export default class Modal extends Component {
       onSubmit,
       onClose,
       maskClosable,
+      closeBtnShown,
       ...others
     } = this.props
 
@@ -32,7 +34,8 @@ export default class Modal extends Component {
     const classString = cx(prefixCls, modalClassName, {
       [`${prefixCls}-fullpage`]: fullPage,
     })
-    const onCloseProp = maskClosable && onClose ? {onClick: this.handleWrapperClick} : {}
+    const wrapperCloseProp = maskClosable && onClose ? {onClick: this.handleWrapperClick} : {}
+    const buttonCloseProp = onClose ? {onClick: onClose} : {}
     const onSubmitProp = onSubmit ? {onClick: onSubmit} : {}
 
     let footerNode = null
@@ -48,7 +51,7 @@ export default class Modal extends Component {
             Submit
           </Button>
           <Button
-            {...onCloseProp}
+            {...buttonCloseProp}
           >
             Cancel
           </Button>
@@ -65,14 +68,31 @@ export default class Modal extends Component {
           <div
             key="modal"
             className={wrapperClassString}
-            {...onCloseProp}
+            {...wrapperCloseProp}
           >
             <div
               className={classString}
             >
-              {title && <div className={`${prefixCls}-title`}>{title}</div>}
-              {children}
-              {footerNode && <div className={`${prefixCls}-footer`}>{footerNode}</div>}
+              {closeBtnShown &&
+                  <Button
+                    className={`${prefixCls}-close-button`}
+                    type="plain"
+                    {...buttonCloseProp}
+                  >
+                    <Icon
+                      name="close"
+                      width={18}
+                      height={18}
+                    />
+                  </Button>
+              }
+              <div
+                className={`${prefixCls}-inner-containter`}
+              >
+                {title && <div className={`${prefixCls}-title`}>{title}</div>}
+                {children}
+                {footerNode && <div className={`${prefixCls}-footer`}>{footerNode}</div>}
+              </div>
             </div>
           </div>
         }

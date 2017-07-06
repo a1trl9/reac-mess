@@ -49,6 +49,10 @@ function config(isProd) {
           test: /\.(png|jpg|jpeg|woff|woff2|eot|ttf|image.svg)$/,
           loader: 'url-loader?limit=1&name=[name].[ext]',
         },
+        {
+          test: /\.svg$/,
+          loader: 'svg-loader',
+        },
       ],
     }
   }

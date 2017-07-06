@@ -29,8 +29,11 @@
 
 .pg-modal {
   position: absolute;
-  overflow: hidden;
   border-radius: 12px;
+
+  &-inner-container {
+    overflow: hidden;
+  }
 
   &-title {
     height: 48px;
@@ -44,6 +47,15 @@
     height: 48px;
     padding: 12px 24px;
     text-align: right;
+  }
+
+  &-close-button {
+    position: absolute;
+    right: -30px;
+    top: 24px;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
   }
 
   &-fullpage {

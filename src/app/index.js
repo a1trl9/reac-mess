@@ -27,6 +27,7 @@ export default class App extends Component {
           title="Modal Title"
           shown={shown}
           maskClosable
+          closeBtnShown
           onClose={() => this.setState({shown: false})}
           fullPage
         >
