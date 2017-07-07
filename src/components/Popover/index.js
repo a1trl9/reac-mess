@@ -51,14 +51,39 @@ export default class Popover extends Component {
         this.setState({
           contentStyle: {
             left: contentLeft,
-            bottom: bottom - contentHeight - margin,
-          }})
+            top: top + height + margin,
+          },
+        })
       } else {
         this.setState({
           contentStyle: {
             left: contentLeft,
             top: top - contentHeight - margin,
-          }})
+          },
+        })
+      }
+    } else {
+      let contentTop = top + (height - contentHeight) / 2
+      if (align === 'negative') {
+        contentTop = bottom - contentHeight
+      } else if (align === 'position') {
+        contentTop = top
+      }
+
+      if (window.innerWidth - right < contentWidth + margin) {
+        this.setState({
+          contentStyle: {
+            left: left - contentWidth - margin,
+            top: contentTop,
+          },
+        })
+      } else {
+        this.setState({
+          contentStyle: {
+            left: left + width + margin,
+            top: contentTop,
+          },
+        })
       }
     }
   }
@@ -112,6 +137,7 @@ Popover.propTypes = {
   trigger: PropTypes.oneOf(['hover', 'click']),
   type: PropTypes.oneOf(['horizontal', 'vertical']),
   align: PropTypes.oneOf(['center', 'negative', 'positive']),
+  margin: PropTypes.number,
 }
 
 Popover.defaultProps = {
@@ -119,4 +145,5 @@ Popover.defaultProps = {
   trigger: 'click',
   type: 'vertical',
   align: 'center',
+  margin: 0,
 }
