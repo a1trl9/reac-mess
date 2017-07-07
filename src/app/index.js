@@ -43,6 +43,7 @@ export default class App extends Component {
         <Popover
           content={<Card>Popover content</Card>}
           shown={popShown}
+          align="positive"
         >
           <Button
             onClick={() => this.setState(({popShown}) => {

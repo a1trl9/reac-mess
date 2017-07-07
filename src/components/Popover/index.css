@@ -21,3 +21,7 @@
     transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 }
+
+.pg-popover-content {
+  position: absolute;
+}

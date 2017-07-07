@@ -1,10 +1,68 @@
 import React, {Component, Children, cloneElement} from 'react'
+import {findDOMNode} from 'react-dom'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import TransitionPortal from '../TransitionPortal'
 import './index.css'
 
 export default class Popover extends Component {
+  state = {
+    contentStyle: null,
+  }
+
+  componentDidUpdate(prevProps) {
+    const {shown: prevShown} = prevProps
+    const {shown} = this.props
+    if (shown && !prevShown) {
+      this.calcContentPosition()
+    }
+  }
+
+  calcContentPosition() {
+    if (!this.content || !this.trigger) {
+      return
+    }
+    const {type, align, margin} = this.props
+    const contentDOM = findDOMNode(this.content)
+    const triggerDOM = findDOMNode(this.trigger)
+    const {
+      top,
+      right,
+      bottom,
+      left,
+      width,
+      height,
+    } = triggerDOM.getBoundingClientRect()
+    const {
+      width: contentWidth,
+      height: contentHeight,
+    } = contentDOM.getBoundingClientRect()
+
+
+    if (type === 'vertical') {
+      let contentLeft = left + (width - contentWidth) / 2
+      if (align === 'negative') {
+        contentLeft = right - contentWidth
+      } else if (align === 'positive') {
+        contentLeft = left
+      }
+
+      if (top < contentHeight + margin) {
+        this.setState({
+          contentStyle: {
+            left: contentLeft,
+            bottom: bottom - contentHeight - margin,
+          }})
+      } else {
+        this.setState({
+          contentStyle: {
+            left: contentLeft,
+            top: top - contentHeight - margin,
+          }})
+      }
+    }
+  }
+
   render() {
     const {
       prefixCls,
@@ -16,10 +74,19 @@ export default class Popover extends Component {
       children,
       ...others,
     } = this.props
+    const {contentStyle} = this.state
 
     const classString = cx(prefixCls, className)
     const childrenNode = cloneElement(Children.only(children), {
       className: `${prefixCls}-trigger`,
+      ref: (el) => this.trigger = el,
+    })
+    const contentNode = cloneElement(content, {
+      className: `${prefixCls}-content`,
+      ref: (el) => this.content = el,
+      style: {
+        ...contentStyle,
+      },
     })
 
     return (
@@ -31,7 +98,7 @@ export default class Popover extends Component {
         <TransitionPortal
           transitionName={prefixCls}
         >
-          {shown && content}
+          {shown && contentNode}
         </TransitionPortal>
       </div>
     )
@@ -43,9 +110,13 @@ Popover.propTypes = {
   shown: PropTypes.bool,
   content: PropTypes.node,
   trigger: PropTypes.oneOf(['hover', 'click']),
+  type: PropTypes.oneOf(['horizontal', 'vertical']),
+  align: PropTypes.oneOf(['center', 'negative', 'positive']),
 }
 
 Popover.defaultProps = {
   prefixCls: 'pg-popover',
   trigger: 'click',
+  type: 'vertical',
+  align: 'center',
 }
