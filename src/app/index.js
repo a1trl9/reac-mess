@@ -2,15 +2,17 @@ import React, {Component} from 'react'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import Modal from '../components/Modal'
+import Popover from '../components/Popover'
 import './index.css'
 
 export default class App extends Component {
   state = {
     shown: false,
+    popShown: false,
   }
 
   render() {
-    const {shown} = this.state
+    const {shown, popShown} = this.state
 
     return (
       <div>
@@ -21,7 +23,7 @@ export default class App extends Component {
             }
           })}
         >
-          switch
+          modalSwitch
         </Button>
         <Modal
           title="Modal Title"
@@ -38,6 +40,20 @@ export default class App extends Component {
             <p>You cannot use a general expression as the React element type. If you do want to use a general expression to indicate the type of the element, just assign it to a capitalized variable first. This often comes up when you want to render a different component based on a prop:</p>
           </Card>
         </Modal>
+        <Popover
+          content={<Card>Popover content</Card>}
+          shown={popShown}
+        >
+          <Button
+            onClick={() => this.setState(({popShown}) => {
+              return {
+                popShown: !popShown,
+              }
+            })}
+          >
+            popoverSwitch
+          </Button>
+        </Popover>
       </div>
     )
   }
