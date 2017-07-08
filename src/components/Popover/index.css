@@ -1,23 +1,23 @@
 .pg-popover {
   &-appear, &-enter {
     opacity: 0;
-    transform: translateY(20px);
+    transform: scale(0) translateY(20px);
   }
 
   &-appear-active, &-enter-active {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
     transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 
   &-leave {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
   }
 
   &-leave-active {
     opacity: 0;
-    transform: translateY(20px);
+    transform: scale(0) translateY(20px);
     transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 }

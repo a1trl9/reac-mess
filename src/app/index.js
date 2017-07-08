@@ -47,6 +47,7 @@ export default class App extends Component {
           type="horizontal"
         >
           <Button
+            style={{marginLeft: '600px'}}
             onClick={() => this.setState(({popShown}) => {
               return {
                 popShown: !popShown,

@@ -84,7 +84,7 @@ TransitionPortal.propTypes = {
 TransitionPortal.defaultProps = {
   ...ReactCSSTransitionGroup.defaultProps,
   transitionAppear: true,
-  transitionAppearTimeout: 400,
-  transitionEnterTimeout: 400,
-  transitionLeaveTimeout: 400,
+  transitionAppearTimeout: 300,
+  transitionEnterTimeout: 300,
+  transitionLeaveTimeout: 300,
 }

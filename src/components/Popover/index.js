@@ -2,6 +2,7 @@ import React, {Component, Children, cloneElement} from 'react'
 import {findDOMNode} from 'react-dom'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
+import omit from 'object.omit'
 import TransitionPortal from '../TransitionPortal'
 import './index.css'
 
@@ -33,18 +34,18 @@ export default class Popover extends Component {
       width,
       height,
     } = triggerDOM.getBoundingClientRect()
-    const {
-      width: contentWidth,
-      height: contentHeight,
-    } = contentDOM.getBoundingClientRect()
-
+    const contentWidth = contentDOM.offsetWidth
+    const contentHeight = contentDOM.offsetHeight
 
     if (type === 'vertical') {
       let contentLeft = left + (width - contentWidth) / 2
+      let transformOrigin = ''
       if (align === 'negative') {
         contentLeft = right - contentWidth
+        transformOrigin = 'left'
       } else if (align === 'positive') {
         contentLeft = left
+        transformOrigin = 'right'
       }
 
       if (top < contentHeight + margin) {
@@ -52,6 +53,7 @@ export default class Popover extends Component {
           contentStyle: {
             left: contentLeft,
             top: top + height + margin,
+            transformOrigin: `${transformOrigin} top`,
           },
         })
       } else {
@@ -59,15 +61,19 @@ export default class Popover extends Component {
           contentStyle: {
             left: contentLeft,
             top: top - contentHeight - margin,
+            transformOrigin: `${transformOrigin} bottom`,
           },
         })
       }
     } else {
       let contentTop = top + (height - contentHeight) / 2
+      let transformOrigin = ''
       if (align === 'negative') {
         contentTop = bottom - contentHeight
-      } else if (align === 'position') {
+        transformOrigin = 'bottom'
+      } else if (align === 'positive') {
         contentTop = top
+        transformOrigin = 'top'
       }
 
       if (window.innerWidth - right < contentWidth + margin) {
@@ -75,6 +81,7 @@ export default class Popover extends Component {
           contentStyle: {
             left: left - contentWidth - margin,
             top: contentTop,
+            transformOrigin: `${transformOrigin} right`,
           },
         })
       } else {
@@ -82,6 +89,7 @@ export default class Popover extends Component {
           contentStyle: {
             left: left + width + margin,
             top: contentTop,
+            transformOrigin: `${transformOrigin} left`,
           },
         })
       }
@@ -97,6 +105,7 @@ export default class Popover extends Component {
       trigger,
       onClose,
       children,
+      transitionProps,
       ...others,
     } = this.props
     const {contentStyle} = this.state
@@ -117,11 +126,12 @@ export default class Popover extends Component {
     return (
       <div
         className={classString}
-        {...others}
+        {...omit(others, ['align', 'type', 'margin'])}
       >
         {childrenNode}
         <TransitionPortal
           transitionName={prefixCls}
+          {...transitionProps}
         >
           {shown && contentNode}
         </TransitionPortal>
@@ -138,6 +148,7 @@ Popover.propTypes = {
   type: PropTypes.oneOf(['horizontal', 'vertical']),
   align: PropTypes.oneOf(['center', 'negative', 'positive']),
   margin: PropTypes.number,
+  transitionProps: PropTypes.object,
 }
 
 Popover.defaultProps = {
