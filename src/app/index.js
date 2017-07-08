@@ -45,6 +45,7 @@ export default class App extends Component {
           shown={popShown}
           align="positive"
           type="horizontal"
+          onClose={() => this.setState({popShown: false})}
         >
           <Button
             style={{marginLeft: '600px'}}

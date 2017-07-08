@@ -11,11 +11,30 @@ export default class Popover extends Component {
     contentStyle: null,
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {shown, onClose} = this.props
+    if (!onClose) {
+      return
+    }
+    const {shown: nextShown} = nextProps
+    if (!shown && nextShown) {
+      document.addEventListener('click', this.handleClose)
+    } else if (shown && !nextShown) {
+      document.removeEventListener('click', this.handleClose)
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const {shown: prevShown} = prevProps
     const {shown} = this.props
     if (shown && !prevShown) {
       this.calcContentPosition()
+    }
+  }
+
+  handleClose = (e) => {
+    if (!findDOMNode(this.content).contains(e.target)) {
+      this.props.onClose(e)
     }
   }
 
@@ -149,6 +168,7 @@ Popover.propTypes = {
   align: PropTypes.oneOf(['center', 'negative', 'positive']),
   margin: PropTypes.number,
   transitionProps: PropTypes.object,
+  onClose: PropTypes.func,
 }
 
 Popover.defaultProps = {
