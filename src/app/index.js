@@ -41,7 +41,7 @@ export default class App extends Component {
           </Card>
         </Modal>
         <Popover
-          content={<Card>Popover content</Card>}
+          content={<Card bordered={false}>Popover content</Card>}
           shown={popShown}
           align="positive"
           type="horizontal"

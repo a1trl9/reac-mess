@@ -6,8 +6,11 @@ import omit from 'object.omit'
 import TransitionPortal from '../TransitionPortal'
 import './index.css'
 
+const POPOVER_ARROW_HEIGHT = 5
+
 export default class Popover extends Component {
   state = {
+    direction: null,
     contentStyle: null,
   }
 
@@ -61,25 +64,27 @@ export default class Popover extends Component {
       let transformOrigin = ''
       if (align === 'negative') {
         contentLeft = right - contentWidth
-        transformOrigin = 'left'
+        transformOrigin = 'right'
       } else if (align === 'positive') {
         contentLeft = left
-        transformOrigin = 'right'
+        transformOrigin = 'left'
       }
 
-      if (top < contentHeight + margin) {
+      if (top < contentHeight + margin + POPOVER_ARROW_HEIGHT) {
         this.setState({
+          direction: 'down',
           contentStyle: {
             left: contentLeft,
-            top: top + height + margin,
+            top: top + height + margin + POPOVER_ARROW_HEIGHT,
             transformOrigin: `${transformOrigin} top`,
           },
         })
       } else {
         this.setState({
+          direction: 'up',
           contentStyle: {
             left: contentLeft,
-            top: top - contentHeight - margin,
+            top: top - contentHeight - margin - POPOVER_ARROW_HEIGHT,
             transformOrigin: `${transformOrigin} bottom`,
           },
         })
@@ -95,18 +100,20 @@ export default class Popover extends Component {
         transformOrigin = 'top'
       }
 
-      if (window.innerWidth - right < contentWidth + margin) {
+      if (window.innerWidth - right < contentWidth + margin + POPOVER_ARROW_HEIGHT) {
         this.setState({
+          direction: 'left',
           contentStyle: {
-            left: left - contentWidth - margin,
+            left: left - contentWidth - margin - POPOVER_ARROW_HEIGHT,
             top: contentTop,
             transformOrigin: `${transformOrigin} right`,
           },
         })
       } else {
         this.setState({
+          direction: 'right',
           contentStyle: {
-            left: left + width + margin,
+            left: left + width + margin + POPOVER_ARROW_HEIGHT,
             top: contentTop,
             transformOrigin: `${transformOrigin} left`,
           },
@@ -125,27 +132,41 @@ export default class Popover extends Component {
       onClose,
       children,
       transitionProps,
+      align,
+      type,
       ...others,
     } = this.props
-    const {contentStyle} = this.state
+    const {direction, contentStyle} = this.state
 
     const classString = cx(prefixCls, className)
     const childrenNode = cloneElement(Children.only(children), {
       className: `${prefixCls}-trigger`,
       ref: (el) => this.trigger = el,
     })
-    const contentNode = cloneElement(content, {
-      className: `${prefixCls}-content`,
-      ref: (el) => this.content = el,
-      style: {
-        ...contentStyle,
-      },
-    })
+    const contentNode = (
+      <div
+        className={`${prefixCls}-content`}
+        ref={(el) => this.content = el}
+        style={{
+          ...contentStyle,
+        }}
+      >
+        <div
+          className={cx(`${prefixCls}-content-arrow`, {
+            [`${prefixCls}-content-arrow-${align}`]: align,
+            [`${prefixCls}-content-arrow-${direction}`]: direction,
+            [`${prefixCls}-content-arrow-${type}`]: type === 'horizontal',
+            }
+          )}
+        ></div>
+        {content}
+      </div>
+    )
 
     return (
       <div
         className={classString}
-        {...omit(others, ['align', 'type', 'margin'])}
+        {...omit(others, ['margin'])}
       >
         {childrenNode}
         <TransitionPortal
@@ -175,6 +196,5 @@ Popover.defaultProps = {
   prefixCls: 'pg-popover',
   trigger: 'click',
   type: 'vertical',
-  align: 'center',
   margin: 0,
 }
