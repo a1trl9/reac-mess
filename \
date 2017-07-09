@@ -1,0 +1,34 @@
+import React, {Component, Children, cloneElement} from 'react'
+import PropTypes from 'prop-types'
+import cx from 'classnames'
+
+export default class Layout extends Component {
+  render() {
+    const {
+      prefixCls,
+      header,
+      content,
+      sider,
+      footer,
+    } = this.props
+
+    <div className={cx(prefixCls, className)}>
+      {header && <div className={cx(`${prefixCls}-header`)}>{header}</div>}
+      {sider && <div className={cx(`${prefixCls}-sider`)}>{sider}</div>}
+      {content && <div className={cx(`${prefixCls}-content`)}>{content}</div>}
+      {footer && <div className={cx(`${prefixCls}-footer`)}>{footer}</div>}
+    </div>
+  }
+}
+
+Layout.propTypes = {
+  prefixCls: PropTypes.string,
+  header: PropTypes.node,
+  content: PropTypes.node,
+  sider: PropTypes.node,
+  footer: PropTypes.node,
+}
+
+Layout.defaultProps = {
+  prefixCls: 'pg-layout',
+}

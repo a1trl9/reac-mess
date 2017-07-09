@@ -1,0 +1,22 @@
+.pg-layout {
+  display: flex;
+  flex-direction: column;
+
+  &-hasSider {
+    flex-direction: row;
+  }
+
+  &-sider {
+    flex: 0 0 200px;
+  }
+
+  &-wrapper {
+    flex: auto;
+  }
+
+  &-header, &-footer {
+    padding: 0 48px;
+    height: 64px;
+    line-height: 64px;
+  }
+}
