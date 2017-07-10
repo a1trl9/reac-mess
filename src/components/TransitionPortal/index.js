@@ -1,5 +1,4 @@
-import React, {Component, Children} from 'react'
-import PropTypes from 'prop-types'
+import React, { Component, Children } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Portal from '../Portal'
 
@@ -12,8 +11,8 @@ export default class TransitionPortal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {transitionLeaveTimeout, children} = this.props
-    const {children: nextChildren} = nextProps
+    const { transitionLeaveTimeout, children } = this.props
+    const { children: nextChildren } = nextProps
     const count = Children.toArray(children).length
     const nextCount = Children.toArray(nextChildren).length
 
@@ -50,7 +49,7 @@ export default class TransitionPortal extends Component {
       children,
       ...others
     } = this.props
-    const {shown} = this.state
+    const { shown } = this.state
 
     if (shown) {
       return (

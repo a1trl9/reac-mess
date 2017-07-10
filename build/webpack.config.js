@@ -1,6 +1,8 @@
 const path = require('path')
 const webpack= require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+
 
 const exclude = /node_modules\/*/
 
@@ -31,10 +33,20 @@ function config(isProd) {
         filename: 'index.html',
         inject: 'body',
       }),
+      new PrepackWebpackPlugin({}),
     ],
     module: {
       noParse: /\.min\.js/,
       loaders: [
+        {
+          test: /\.js$/,
+          loader: 'eslint-loader',
+          exclude,
+          enforce: 'pre',
+          options: {
+            fix: true,
+          },
+        },
         {
           test: /\.js$/,
           loader: 'babel-loader?cacheDirectory',

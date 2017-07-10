@@ -22,6 +22,7 @@ export default class Icon extends Component {
         style={{
           fill,
         }}
+        className={classString}
         src={require(`../Svg/lib/${name}.svg`)}
       />
     )
@@ -30,7 +31,7 @@ export default class Icon extends Component {
 
 Icon.propTypes = {
   prefixCls: PropTypes.string,
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
   fill: PropTypes.string,

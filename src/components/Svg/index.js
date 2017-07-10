@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class Svg extends Component {
@@ -17,9 +17,9 @@ export default class Svg extends Component {
         {...attributes}
         {...props}
       >
-        <title>{title}</title>
+        {title && <title>{title}</title>}
         <g
-          dangerouslySetInnerHTML={{__html: content}}
+          dangerouslySetInnerHTML={{ __html: content }}
         />
       </svg>
     )
@@ -27,6 +27,6 @@ export default class Svg extends Component {
 }
 
 Svg.propTypes = {
-  src: PropTypes.object,
+  src: PropTypes.object.isRequired,
   title: PropTypes.string,
 }

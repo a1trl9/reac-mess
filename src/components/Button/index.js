@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import omit from 'object.omit'
 import ButtonGroup from './ButtonGroup'
 import './index.css'
 
-export {ButtonGroup}
+export { ButtonGroup }
 
 export default class Button extends Component {
   constructor(props) {
@@ -17,8 +17,8 @@ export default class Button extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {loading: currentLoading} = this.props
-    const {loading} = nextProps
+    const { loading: currentLoading } = this.props
+    const { loading } = nextProps
 
     if (currentLoading) {
       clearTimeout(this.delayTimeout)
@@ -53,10 +53,10 @@ export default class Button extends Component {
   }
 
   handleClick = (e) => {
-    this.setState({clicked: true})
+    this.setState({ clicked: true })
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      this.setState({clicked: false})
+      this.setState({ clicked: false })
     }, 500)
     if (this.props.onClick) {
       this.props.onClick(e)
