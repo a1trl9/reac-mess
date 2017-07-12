@@ -13,27 +13,27 @@ function config(isProd) {
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?path=//0.0.0.0:' +
         '3001/__webpack_hmr&overlay=false',
-        path.resolve(__dirname, '../src/app/entry.js'),
-      ],
+        path.resolve(__dirname, '../src/app/entry.js')
+      ]
     },
     output: {
       path: path.resolve(__dirname, '../static'),
       filename: isProd ? '[name].[chunkhash].js' : '[name].js',
-      publicPath: '/',
+      publicPath: '/'
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'common',
         filename: 'common.js',
-        minChunks: 2,
+        minChunks: 2
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, '../src/app/entry.html'),
         filename: 'index.html',
-        inject: 'body',
+        inject: 'body'
       }),
-      new PrepackWebpackPlugin({}),
+      new PrepackWebpackPlugin({})
     ],
     module: {
       noParse: /\.min\.js/,
@@ -44,28 +44,28 @@ function config(isProd) {
           exclude,
           enforce: 'pre',
           options: {
-            fix: true,
-          },
+            fix: true
+          }
         },
         {
           test: /\.js$/,
           loader: 'babel-loader?cacheDirectory',
-          exclude,
+          exclude
         },
         {
           test: /\.css$/,
           loader: 'style-loader!css-loader!less-loader!postcss-loader',
-          exclude,
+          exclude
         },
         {
           test: /\.(png|jpg|jpeg|woff|woff2|eot|ttf|image.svg)$/,
-          loader: 'url-loader?limit=1&name=[name].[ext]',
+          loader: 'url-loader?limit=1&name=[name].[ext]'
         },
         {
           test: /\.svg$/,
-          loader: 'svg-loader',
-        },
-      ],
+          loader: 'svg-loader'
+        }
+      ]
     }
   }
 }
