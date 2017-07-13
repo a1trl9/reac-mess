@@ -1,8 +1,6 @@
 const path = require('path')
 const webpack= require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
-
 
 const exclude = /node_modules\/*/
 
@@ -32,8 +30,7 @@ function config(isProd) {
         template: path.resolve(__dirname, '../src/app/entry.html'),
         filename: 'index.html',
         inject: 'body'
-      }),
-      new PrepackWebpackPlugin({})
+      })
     ],
     module: {
       noParse: /\.min\.js/,
