@@ -5,7 +5,7 @@ import register from './register'
 const HASH_ID = 0
 
 export default class EventHandler {
-  constructor(event, listener, context) {
+  constructor(options) {
     if (!window.EE) {
       window.EE = new EventEmitter()
     }
@@ -16,13 +16,13 @@ export default class EventHandler {
         removers: []
       }
     }
+    this.connectTrottle({...options})
   }
 
-  connectTrottle = ({ trottledEvent, trottledMainEvent, listener, context }) => {
+  connectTrottle = ({ trottledEvent, listener, context }) => {
     window.EE.on(trottledEvent, listener, context)
     const { connections, listeners, removers } = window.eventProps
-    const eventKey = trottledMainEvent || trottledEvent
-    connections[eventKey] = (connections[event] || 0) + 1
+    connections[trottledEvent] = (connections[event] || 0) + 1
     this._type = trottledEvent
     this._listener = listener
     this._context = context
@@ -31,10 +31,10 @@ export default class EventHandler {
         return
       }
       EE.removeListener(trottledEvent, listener, context)
-      connections[eventKey]--
-      if (connections[eventKey] === 0) {
-        listeners[eventKey].remove()
-        listeners[event] = undefined
+      connections[trottledEvent]--
+      if (connections[trottledEvent] === 0) {
+        listeners[trottledEvent].remove()
+        listeners[trottledEvent] = undefined
       }
       this._type = undefined
       this._callback = undefined
@@ -49,15 +49,16 @@ export default class EventHandler {
       }
     }
   }
+}
 
-  connectEvent = (target, event) => {
+function connectEvent(target, event) {
     return ({ trottleRate = 300, listener, context, domTarget, threshold = 500 }) => {
       const { listeners, removers } = window.eventProps
       const domID = domTarget && (domTarget.id || `target-id:${HASH_ID++}`)
 
       const trottledEvent = `${event}${domID ? `${:}${domID}` : ''}`
 
-      const remover = connectTrottle({ trottledEvent, listener, context })
+      const remover = new EventHandler({ trottledEvent, listener, context })
       removers.push(remover)
 
       if (listeners[trottledEvent]) {
@@ -75,4 +76,6 @@ export default class EventHandler {
       return remover
     }
   }
+
+export {
 }
