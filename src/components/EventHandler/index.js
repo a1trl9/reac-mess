@@ -1,4 +1,5 @@
 import EventEmitter from 'eventemitter3'
+import _throttle as throttle from 'loadash/throttle'
 import register from './register'
 
 const HASH_ID = 0
@@ -15,7 +16,6 @@ export default class EventHandler {
         removers: []
       }
     }
-    this.connectTrottle(event, listener, context)
   }
 
   connectTrottle = ({ trottledEvent, trottledMainEvent, listener, context }) => {
@@ -50,51 +50,8 @@ export default class EventHandler {
     }
   }
 
-  connectContinuousEvent = (target, mainEvent, event) => {
-    return (trottleRate, listener, options) => {
-      const { context, domTarget } = options
-      const { removers } = window.eventProps
-      const domID = domTarget && (domTarget.id || `target-id:${HASH_ID++}`)
-      const targetFlag = domID ? `:${domID}` : ''
-
-      const throttledStartEvent = `${mainEvent}Start:${trottleRate}${targetFlag}`
-      const throttledEndEvent = `${mainEvent}End:${trottleRate}${targetFlag}`
-      const throttledMainEvent = `${mainEvent}${trottleRate}${targetFlag}`
-      const throttledEvent = `${event}${trottleRate}${targetFlag}`
-
-      const remover = connectTrottle({ trottledEvent, trottledMainEvent, listener, context })
-      removers.push(remover)
-
-      if (listeners[trottledMainEvent]) {
-        return remover
-      }
-
-      // TODO: argumentedEvent
-
-      let timer
-
-      function handler(e) {
-        if (!timer) {
-          augumentedEvent.start.update(e)
-          window.EE.emit(trottledStartEvent, e, augumentedEvent.start)
-        }
-        clearTimeout(timer)
-        augumentedEvent.main.update(e)
-        window.EE.emit(throttledMainEvent, e, augumentedEvent.main)
-        timer = setTimeout((e) => { endCallback(e) }, trottleRate)
-      }
-
-      function endCallback(e) {
-        augumented.end.update(e)
-        window.EE.emit(throttledEndEvent, e, augumentedEvent.end)
-        timer = null
-      }
-    }
-  }
-
-  connectDiscreteEvent(target, event) => {
-    return (trottleRate, listener, options) => {
-      const { context, domTarget } = options
+  connectEvent = (target, event) => {
+    return ({ trottleRate = 300, listener, context, domTarget, threshold = 500 }) => {
       const { listeners, removers } = window.eventProps
       const domID = domTarget && (domTarget.id || `target-id:${HASH_ID++}`)
 
@@ -107,11 +64,11 @@ export default class EventHandler {
         return remover
       }
 
-      // TODO:
+      let timer
 
       function handler(e) {
-        argumentedEvent.update(e)
-        window.EE.emit(trottledEvent, e, argumentedEvent)
+        clearTimeout(timer)
+        timer = setTimeout(trottle(() => window.EE.emit(trottledEvent, e), trottleRate), threshold)
       }
 
       listeners[trottledEvent] = register(domTarget || target, event, handler)
