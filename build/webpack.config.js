@@ -41,7 +41,8 @@ function config(isProd) {
           exclude,
           enforce: 'pre',
           options: {
-            fix: true
+            fix: true,
+            failOnError: false
           }
         },
         {

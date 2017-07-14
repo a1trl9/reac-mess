@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3'
 import throttle from 'lodash/throttle'
 import register from './register'
 
-export default class EventHandler {
+class EventHandler {
   constructor(options) {
     this.connectTrottle(options)
   }
@@ -52,11 +52,11 @@ if (!window.eventProps) {
   }
 }
 
-function connectEvent(target, event) {
+export default function connectEvent(target, event) {
   return ({
     trottleRate = 300,
     listener,
-    context,
+    context = {},
     domTarget,
     threshold = 500
   }) => {
@@ -87,7 +87,7 @@ function connectEvent(target, event) {
   }
 }
 
-const scroll = connectEvent(window, 'scroll')
-const resize = connectEvent(window, 'resize')
+const scroll = el => connectEvent(el || window, 'scroll')
+const resize = el => connectEvent(el || window, 'resize')
 
 export { scroll, resize }
