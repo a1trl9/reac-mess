@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
-import Button, {ButtonGroup} from '../Button'
+import Button, { ButtonGroup } from '../Button'
 import Icon from '../Icon'
 import TransitionPortal from '../TransitionPortal'
 import './index.css'
 
 export default class Modal extends Component {
-  handleWrapperClick = (e) => {
+  handleWrapperClick = e => {
     if (e.target === e.currentTarget) {
       this.props.onClose()
     }

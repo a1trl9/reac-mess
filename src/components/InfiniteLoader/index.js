@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
+import cx from 'classnames'
+import omit from 'object.omit'
 import { scroll, resize } from '../EventHandler'
 
 export default class InfiniteLoader extends Component {
@@ -26,7 +28,8 @@ export default class InfiniteLoader extends Component {
   }
 
   initiateDOM = () => {
-    this.containerDOM = this.props.container ? findDOMNode(this.props.container)
+    this.containerDOM = this.props.container
+      ? findDOMNode(this.props.container)
       : undefined
     this.elementDOM = findDOMNode(this.element)
   }
@@ -52,26 +55,41 @@ export default class InfiniteLoader extends Component {
 
   handleScroll = e => {
     const { bottom } = this.elementDOM.getBoundingClientRect()
+    let containerBottom = window.innerHeight
     if (this.containerDOM) {
-      const {
-        bottom: containerBottom
-      } = this.containerDOM.getBoundlingClientRect()
-    } else {
-      const containerBottom = window.innerHeight
+      containerBottom = this.containerDOM.getBoundlingClientRect().bottom
     }
 
-    if (containerBottom - bottom < this.props.threshold) {
+    if (bottom - containerBottom < this.props.threshold) {
       this.props.onLoad()
     }
+  }
+
+  render() {
+    const { prefixCls, className, children, ...others } = this.props
+    const classNameString = cx(prefixCls, className)
+
+    return (
+      <div
+        className={classNameString}
+        ref={el => (this.element = el)}
+        {...omit(others, ['threshold', 'hasMore'])}
+      >
+        {children}
+      </div>
+    )
   }
 }
 
 InfiniteLoader.propTypes = {
+  prefixCls: PropTypes.string,
   onLoad: PropTypes.func.isRequired,
   threshold: PropTypes.number,
-  container: PropTypes.node
+  container: PropTypes.node,
+  hasMore: PropTypes.bool
 }
 
 InfiniteLoader.defaultProps = {
+  prefixCls: 'pg-infiniteloader',
   threshold: 100
 }
