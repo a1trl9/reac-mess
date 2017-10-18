@@ -21,23 +21,13 @@ export default class Layout extends Component {
           [`${prefixCls}-hasSider`]: sider
         })}
       >
-        {sider &&
-          <div className={cx(`${prefixCls}-sider`)}>
-            {sider}
-          </div>}
+        {sider && <div className={cx(`${prefixCls}-sider`)}>{sider}</div>}
         <div className={`${prefixCls}-wrapper`}>
-          {header &&
-            <div className={cx(`${prefixCls}-header`)}>
-              {header}
-            </div>}
-          {content &&
-            <div className={cx(`${prefixCls}-content`)}>
-              {content}
-            </div>}
-          {footer &&
-            <div className={cx(`${prefixCls}-footer`)}>
-              {footer}
-            </div>}
+          {header && <div className={cx(`${prefixCls}-header`)}>{header}</div>}
+          {content && (
+            <div className={cx(`${prefixCls}-content`)}>{content}</div>
+          )}
+          {footer && <div className={cx(`${prefixCls}-footer`)}>{footer}</div>}
         </div>
       </div>
     )

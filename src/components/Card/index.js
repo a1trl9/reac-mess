@@ -1,10 +1,9 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import './index.css'
 
 export default class Card extends Component {
-
   render() {
     const {
       prefixCls,
@@ -14,12 +13,12 @@ export default class Card extends Component {
       bordered,
       loading,
       bodyStyle,
-      ...others,
+      ...others
     } = this.props
-    let {children} = this.props
+    let { children } = this.props
     const classString = cx(prefixCls, className, {
       [`${prefixCls}-loading`]: loading,
-      [`${prefixCls}-bordered`]: bordered,
+      [`${prefixCls}-bordered`]: bordered
     })
 
     if (loading) {
@@ -37,16 +36,10 @@ export default class Card extends Component {
     }
 
     return (
-      <div
-        {...others}
-        className={classString}
-      >
+      <div {...others} className={classString}>
         {head}
         {extra ? <div className={`${prefixCls}-extra`}>{extra}</div> : null}
-        <div
-          className={`${prefixCls}-body`}
-          style={bodyStyle}
-        >
+        <div className={`${prefixCls}-body`} style={bodyStyle}>
           {children}
         </div>
       </div>
@@ -63,10 +56,10 @@ Card.propTypes = {
   bordered: PropTypes.bool,
   loading: PropTypes.bool,
   style: PropTypes.object,
-  bodyStyle: PropTypes.object,
+  bodyStyle: PropTypes.object
 }
 
 Card.defaultProps = {
   prefixCls: 'pg-card',
-  bordered: true,
+  bordered: true
 }

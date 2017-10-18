@@ -1,3 +1,4 @@
+.vscode
 static
 node_modules
 yarn.lock

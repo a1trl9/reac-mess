@@ -20,7 +20,7 @@ export default class Portal extends Component {
     document.body.removeChild(this.element)
   }
 
-  renderPortal = (props) => {
+  renderPortal = props => {
     renderSubtreeIntoContainer(this, <div {...props} />, this.element)
   }
 
