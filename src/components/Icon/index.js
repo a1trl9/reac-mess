@@ -1,18 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import Svg from '../Svg'
 
 export default class Icon extends Component {
   render() {
-    const {
-      prefixCls,
-      className,
-      name,
-      width,
-      height,
-      fill,
-    } = this.props
+    const { prefixCls, className, name, width, height, fill } = this.props
     const classString = cx(prefixCls, className)
 
     return (
@@ -20,7 +13,7 @@ export default class Icon extends Component {
         width={width}
         height={height}
         style={{
-          fill,
+          fill
         }}
         className={classString}
         src={require(`../Svg/lib/${name}.svg`)}
@@ -34,12 +27,12 @@ Icon.propTypes = {
   name: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
-  fill: PropTypes.string,
+  fill: PropTypes.string
 }
 
 Icon.defaultProps = {
   prefixCls: 'pg-icon',
   width: 14,
   height: 14,
-  fill: '#fff',
+  fill: '#fff'
 }

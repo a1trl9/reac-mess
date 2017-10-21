@@ -1,18 +1,19 @@
 const path = require('path')
 const webpack= require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
-const exclude = /node_modules\/*/
+const exclude = /node_modules/
 
 function config(isProd) {
   return {
     entry: {
       app: [
-        'react-hot-loader/patch',
-        'webpack-hot-middleware/client?path=//0.0.0.0:' +
-        '3001/__webpack_hmr&overlay=false',
-        path.resolve(__dirname, '../src/app/entry.js')
-      ]
+        !isProd ? 'react-hot-loader/patch' : false,
+        !isProd ? 'webpack-hot-middleware/client?path=//0.0.0.0:' +
+        '3001/__webpack_hmr&overlay=false' : false,
+        path.resolve(__dirname, '../src/app/entry.js'),
+      ].filter(Boolean)
     },
     output: {
       path: path.resolve(__dirname, '../static'),
@@ -20,20 +21,28 @@ function config(isProd) {
       publicPath: '/'
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
+      isProd ? false : new webpack.HotModuleReplacementPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'common',
         filename: 'common.js',
         minChunks: 2
       }),
+      isProd ? new webpack.DefinePlugin({
+         'process.env.NODE_ENV': '"production"'
+      }) : false,
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, '../src/app/entry.html'),
         filename: 'index.html',
         inject: 'body'
-      })
-    ],
+      }),
+      isProd ? new UglifyJSPlugin({
+        uglifyOptions: {
+          output: {comments: false},
+          sourceMap: true
+        }
+      }) : false,
+    ].filter(Boolean),
     module: {
-      noParse: /\.min\.js/,
       loaders: [
         {
           test: /\.js$/,
@@ -62,9 +71,14 @@ function config(isProd) {
         {
           test: /\.svg$/,
           loader: 'svg-loader'
+        },
+        {
+          test: /\.html$/,
+          loader: 'html-loader'
         }
       ]
-    }
+    },
+    target: 'web'
   }
 }
 

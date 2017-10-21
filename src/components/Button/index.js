@@ -12,7 +12,7 @@ export default class Button extends Component {
     super(props)
     this.state = {
       loading: props.loading,
-      clicked: false,
+      clicked: false
     }
   }
 
@@ -27,12 +27,12 @@ export default class Button extends Component {
     if (typeof loading !== 'boolean' && loading && loading.delay) {
       this.delayTimeout = setTimeout(() => {
         this.setState({
-          loading,
+          loading
         })
       }, loading.delay)
     } else {
       this.setState({
-        loading,
+        loading
       })
     }
   }
@@ -52,7 +52,7 @@ export default class Button extends Component {
     }
   }
 
-  handleClick = (e) => {
+  handleClick = e => {
     this.setState({ clicked: true })
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
@@ -73,9 +73,9 @@ export default class Button extends Component {
       className,
       children,
       prefixCls,
-      ...others,
+      ...others
     } = this.props
-    const {loading, clicked} = this.state
+    const { loading, clicked } = this.state
 
     let sizeCls = ''
     if (size === 'large') {
@@ -89,7 +89,7 @@ export default class Button extends Component {
       [`${prefixCls}-${sizeCls}`]: Boolean(sizeCls),
       [`${prefixCls}-loading`]: loading,
       [`${prefixCls}-clicked`]: clicked,
-      [`${prefixCls}-ghost`]: ghost,
+      [`${prefixCls}-ghost`]: ghost
     })
 
     const iconType = loading ? 'loading' : icon
@@ -112,7 +112,7 @@ export default class Button extends Component {
 
 Button.PropTypes = {
   prefixCls: PropTypes.string,
-  type: PropTypes.oneOf(['primary', 'danger', 'default']),
+  type: PropTypes.oneOf(['primary', 'danger', 'default', 'plain']),
   htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
   size: PropTypes.oneOf(['large', 'small', 'default']),
   icon: PropTypes.string,
@@ -120,10 +120,7 @@ Button.PropTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func,
   onMouseUp: PropTypes.func,
-  loading: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
+  loading: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
 }
 
 Button.defaultProps = {
@@ -131,5 +128,5 @@ Button.defaultProps = {
   type: 'default',
   size: 'default',
   htmlType: 'button',
-  loading: false,
+  loading: false
 }

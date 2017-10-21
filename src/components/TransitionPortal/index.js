@@ -1,38 +1,39 @@
-import React, { Component, Children } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import React, { Component, Children, cloneElement } from 'react'
+import Transition from 'react-transition-group/Transition'
+import PropTypes from 'prop-types'
+import cx from 'classnames'
+import omit from 'object.omit'
 import Portal from '../Portal'
 
 export default class TransitionPortal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      shown: Children.toArray(props.children).length !== 0,
+      innerShown: props.shown
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { transitionLeaveTimeout, children } = this.props
-    const { children: nextChildren } = nextProps
-    const count = Children.toArray(children).length
-    const nextCount = Children.toArray(nextChildren).length
+    const { transitionTimeout, shown } = this.props
+    const { shown: nextShown } = nextProps
 
-    if (count === 0 && nextCount > 0) {
+    if (!shown && nextShown) {
       clearTimeout(this.timeoutId)
       this.setState({
-        shown: true,
+        innerShown: true
       })
     }
 
-    if (count > 0 && nextCount === 0) {
-      if (transitionLeaveTimeout) {
+    if (shown && !nextShown) {
+      if (transitionTimeout) {
         this.timeoutId = setTimeout(() => {
           this.setState({
-            shown: false,
+            innerShown: false
           })
-        }, transitionLeaveTimeout)
+        }, transitionTimeout)
       } else {
         this.setState({
-          shown: false,
+          innerShown: false
         })
       }
     }
@@ -41,34 +42,35 @@ export default class TransitionPortal extends Component {
   render() {
     const {
       transitionName,
-      transitionAppear,
-      transitionEnter,
-      transitionAppearTimeout,
-      transitionEnterTimeout,
-      transitionLeaveTimeout,
+      shown,
+      timeout,
       children,
+      onTransitionEnter,
+      onTransitionLeave,
       ...others
     } = this.props
-    const { shown } = this.state
+    const { innerShown } = this.state
 
-    if (shown) {
+    if (innerShown) {
       return (
         <Portal>
-          <ReactCSSTransitionGroup
-            transitionName={{
-              appear: `${transitionName}-appear`,
-              enter: `${transitionName}-enter`,
-              leave: `${transitionName}-leave`,
-            }}
-            transitionAppear={transitionAppear}
-            transitionEnter={transitionEnter}
-            transitionAppearTimeout={transitionAppearTimeout}
-            transitionEnterTimeout={transitionEnterTimeout}
-            transitionLeaveTimeout={transitionLeaveTimeout}
-            {...others}
+          <Transition
+            timeout={timeout}
+            in={shown}
+            appear
+            onEntered={onTransitionEnter}
+            onExisted={onTransitionLeave}
+            {...omit(others, ['transitionTimeout'])}
           >
-            {children}
-          </ReactCSSTransitionGroup>
+            {status => {
+              return cloneElement(children, {
+                className: cx(
+                  children.props.className,
+                  `${transitionName}-${status}`
+                )
+              })
+            }}
+          </Transition>
         </Portal>
       )
     }
@@ -77,13 +79,18 @@ export default class TransitionPortal extends Component {
 }
 
 TransitionPortal.propTypes = {
-  ...ReactCSSTransitionGroup.propTypes,
+  shown: PropTypes.bool,
+  transitionName: PropTypes.string.isRequired,
+  onTransitionEnter: PropTypes.func,
+  onTransitionLeave: PropTypes.func,
+  timeout: PropTypes.number,
+  transitionTimeout: PropTypes.number
 }
 
 TransitionPortal.defaultProps = {
-  ...ReactCSSTransitionGroup.defaultProps,
-  transitionAppear: true,
-  transitionAppearTimeout: 300,
-  transitionEnterTimeout: 300,
-  transitionLeaveTimeout: 300,
+  shown: false,
+  onTransitionEnter: null,
+  onTransitionLeave: null,
+  timeout: 0,
+  transitionTimeout: 300
 }

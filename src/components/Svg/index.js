@@ -3,24 +3,12 @@ import PropTypes from 'prop-types'
 
 export default class Svg extends Component {
   render() {
-    const {
-      src: {
-        content,
-        attributes,
-      },
-      title,
-      ...props,
-    } = this.props
+    const { src: { content, attributes }, title, ...props } = this.props
 
     return (
-      <svg
-        {...attributes}
-        {...props}
-      >
+      <svg {...attributes} {...props}>
         {title && <title>{title}</title>}
-        <g
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <g dangerouslySetInnerHTML={{ __html: content }} />
       </svg>
     )
   }
@@ -28,5 +16,5 @@ export default class Svg extends Component {
 
 Svg.propTypes = {
   src: PropTypes.object.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.string
 }

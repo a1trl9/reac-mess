@@ -1,8 +1,11 @@
-import {Route} from 'react-router'
+import React, { Component } from 'react'
+import { Router, Route, browserHistory } from 'react-router'
+import App from './index'
 
-export default (
-  <Route
-    path="/"
-  >
-  </Route>
-)
+export default function PgRouter() {
+  return (
+    <Router history={browserHistory}>
+      <Route path="/" component={App} />
+    </Router>
+  )
+}

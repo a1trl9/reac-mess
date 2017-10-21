@@ -1,0 +1,13 @@
+.pg-app-header-menu-entry {
+  position: absolute;
+  top: 0;
+  right: 40px;
+  height: 60px;
+  color: #000;
+}
+
+.pg-app-header-menu-item {
+  width: 100%;
+  height: 40px;
+  line-height: 38px;
+}

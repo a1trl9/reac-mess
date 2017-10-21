@@ -60,6 +60,10 @@
   &-plain {
     background: transparent;
     border: none;
+
+    &:hover {
+      color: #49a9ee;
+    }
   }
 
   &:disabled {

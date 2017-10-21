@@ -1,0 +1,6 @@
+.pg-listview {
+  & .pg-listitem:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+

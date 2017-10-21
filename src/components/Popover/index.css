@@ -1,24 +1,17 @@
 .pg-popover {
-  &-appear, &-enter {
+  &-entering, &-exited {
     opacity: 0;
     transform: scale(0) translateY(20px);
   }
 
-  &-appear-active, &-enter-active {
+  &-entered {
     opacity: 1;
     transform: scale(1) translateY(0);
     transition: transform 300ms ease-in, opacity 300ms ease-in;
   }
 
-  &-leave {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-
-  &-leave-active {
-    opacity: 0;
-    transform: scale(0) translateY(20px);
-    transition: transform 300ms ease-in, opacity 300ms ease-in;
+  &-exited {
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 }
 
@@ -36,14 +29,14 @@
       left: 50%;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
-      transform: translateX(-1.5px);
+      transform: translateX(-5px);
     }
 
     &-horizontal {
       top: 50%;
       border-top: 5px solid transparent;
       border-bottom: 5px solid transparent;
-      transform: translateY(-1.5px);
+      transform: translateY(-5px);
     }
 
     &-vertical&-positive {
