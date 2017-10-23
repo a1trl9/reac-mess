@@ -1,11 +1,5 @@
-.pg-gridview {
-  display: flex;
-  flex-direction: column;
-}
-
 .pg-gridrow {
   display: flex;
-  flex: 1;
 }
 
 .pg-gridelement, .pg-gridelement-empty {

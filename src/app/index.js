@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import AppHeader from './AppHeader'
 import ShowCardView from './ShowCardView'
+import { initEventHandler } from '../components/EventHandler'
 import './index.css'
 
 export default class App extends Component {
   state = {
     showCardType: 'grid'
+  }
+
+  componentDidMount() {
+    initEventHandler()
   }
 
   buildHandleSwitchShowCard = type => {

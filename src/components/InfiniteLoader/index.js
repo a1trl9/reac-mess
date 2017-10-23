@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import omit from 'object.omit'
-import { scroll, resize } from '../EventHandler'
+import { connectEvent } from '../EventHandler'
 
 export default class InfiniteLoader extends Component {
   componentDidMount() {
@@ -39,11 +39,11 @@ export default class InfiniteLoader extends Component {
       return
     }
 
-    this.scrollRemover = scroll(this.containerDOM)({
+    this.scrollRemover = connectEvent(this.containerDOM, 'scroll')({
       listener: this.handleScroll
     })
 
-    this.resizeRemover = resize(this.containerDOM)({
+    this.resizeRemover = connectEvent(this.containerDOM, 'resize')({
       listener: this.handleScroll
     })
   }

@@ -1,17 +1,14 @@
 .pg-popover {
-  &-entering, &-exited {
+  &-exited, &-entering {
     opacity: 0;
     transform: scale(0) translateY(20px);
+    transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 
   &-entered {
     opacity: 1;
     transform: scale(1) translateY(0);
     transition: transform 300ms ease-in, opacity 300ms ease-in;
-  }
-
-  &-exited {
-    transition: transform 300ms ease-out, opacity 300ms ease-out;
   }
 }
 

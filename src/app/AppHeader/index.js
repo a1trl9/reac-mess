@@ -11,6 +11,7 @@ export default class AppHeader extends Component {
   }
 
   handleClick = e => {
+    console.log('haha')
     this.setState(({ shown }) => {
       return {
         shown: !shown

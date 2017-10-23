@@ -41,16 +41,22 @@ class EventHandler {
 
 let HASH_ID = 0
 
-if (!window.EE) {
-  window.EE = new EventEmitter()
-}
-if (!window.eventProps) {
-  window.eventProps = {
-    connections: {},
-    listeners: [],
-    removers: []
+function initEventHandler() {
+  if (typeof window !== 'undefined') {
+    if (!window.EE) {
+      window.EE = new EventEmitter()
+    }
+    if (!window.eventProps) {
+      window.eventProps = {
+        connections: {},
+        listeners: [],
+        removers: []
+      }
+    }
   }
 }
+
+export { initEventHandler }
 
 export default function connectEvent(target, event) {
   return ({
@@ -86,8 +92,3 @@ export default function connectEvent(target, event) {
     return remover
   }
 }
-
-const scroll = el => connectEvent(el || window, 'scroll')
-const resize = el => connectEvent(el || window, 'resize')
-
-export { scroll, resize }
