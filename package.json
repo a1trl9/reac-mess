@@ -5,20 +5,18 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf static/*",
-    "build": "npm run clean && webpack --config build/client.config.js",
+    "client-build": "npm run clean && webpack --config build/client.config.js",
     "dev": "npm run clean && webpack --config build/dev.config.js && node build/dev.server.js",
-    "server-build": "npm run build && webpack --config build/server.config.js",
-    "lint-check": "eslint --print-config .eslintrc"
+    "build": "npm run client-build && webpack --config build/server.config.js",
+    "lint-check": "eslint --print-config .eslintrc",
+    "start": "node static/server.js"
   },
   "author": "a1trl9",
   "license": "MIT",
   "dependencies": {
-    "babel-eslint": "^7.2.3",
     "classnames": "^2.2.5",
     "eventemitter3": "^2.0.3",
     "express": "^4.16.2",
-    "extract-text-webpack-plugin": "2.1.2",
-    "html-loader": "^0.5.1",
     "lodash.throttle": "^4.1.1",
     "object.omit": "^2.0.1",
     "prop-types": "^15.5.10",
@@ -28,13 +26,12 @@
     "react-hot-loader": "^3.0.0-beta.5",
     "react-router": "^3.0.2",
     "react-slick": "^0.15.4",
-    "react-transition-group": "^2.2.1",
-    "universal-webpack": "^0.4.0",
-    "webpack-node-externals": "^1.6.0"
+    "react-transition-group": "^2.2.1"
   },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.23.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^6.3.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
@@ -47,7 +44,9 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
+    "extract-text-webpack-plugin": "2.1.2",
     "file-loader": "^1.1.5",
+    "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.28.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
@@ -60,6 +59,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.1",
+    "webpack-node-externals": "^1.6.0",
     "webpack-hot-middleware": "^2.17.1"
   }
 }
