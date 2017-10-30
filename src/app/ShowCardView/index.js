@@ -4,32 +4,64 @@ import cx from 'classnames'
 import Card from '../../components/Card'
 import GridView from '../../components/GridView'
 import ListView, { ListItem } from '../../components/ListView'
+import './index.css'
 
 export default class ShowCardView extends Component {
   infos = [
     {
       title: 'Algorithm Final Exam Review',
-      linkName: 'Dropbox Directory',
-      link:
-        'https://www.dropbox.com/sh/7wua7gcvj329177/AADmmw1sKNIb352TiaMeVJuCa?dl=0'
+      links: [
+        {
+          linkName: 'Dropbox Directory',
+          link:
+            'https://www.dropbox.com/sh/7wua7gcvj329177/AADmmw1sKNIb352TiaMeVJuCa?dl=0'
+        }
+      ]
     },
     {
       title: 'Python Final Exam Review',
-      linkName: 'Dropbox Directory',
-      link:
-        'https://www.dropbox.com/sh/9f0q2hsgvlyj3be/AAA5_CuGQzDAgPTnvL5dbJqLa?dl=0'
+      links: [
+        {
+          linkName: 'Dropbox Directory',
+          link:
+            'https://www.dropbox.com/sh/9f0q2hsgvlyj3be/AAA5_CuGQzDAgPTnvL5dbJqLa?dl=0'
+        },
+        {
+          linkName: 'Dropbox Paper Directory',
+          link:
+            'https://paper.dropbox.com/folder/show/python_collection-e.iX7ZavGxujPFwhjOZcQrkgApZxhKWzGWrMcoloGjRTUQgSc8Ka'
+        }
+      ]
     },
     {
       title: 'OP Final Report and Drafts',
-      linkName: 'Dropbox Paper',
-      link:
-        'https://paper.dropbox.com/folder/show/assignment2-e.iX7ZavGxujPFwhjOZcQrbq37zHgsoMZnOemLz42QxMrSmAEz1T'
+      links: [
+        {
+          linkName: 'Dropbox Paper',
+          link:
+            'https://paper.dropbox.com/folder/show/assignment2-e.iX7ZavGxujPFwhjOZcQrbq37zHgsoMZnOemLz42QxMrSmAEz1T'
+        }
+      ]
     },
     {
       title: 'OP Diagram',
-      linkName: 'Dropbox',
-      link:
-        'https://www.dropbox.com/sh/ysvpb87gbn0aprl/AAA5L6KRlik9mbTJO6Js19zSa?dl=0'
+      links: [
+        {
+          linkName: 'Dropbox',
+          link:
+            'https://www.dropbox.com/sh/ysvpb87gbn0aprl/AAA5L6KRlik9mbTJO6Js19zSa?dl=0'
+        }
+      ]
+    },
+    {
+      title: 'Leetcode Collection',
+      links: [
+        {
+          linkName: 'Dropbox Paper',
+          link:
+            'https://paper.dropbox.com/folder/show/leetcode_collection-e.iX7ZavGxujPFwhjOZcQrkj5WRWLAaV0f6IWxGRLCCgEZKY4NnC'
+        }
+      ]
     }
   ]
 
@@ -45,7 +77,7 @@ export default class ShowCardView extends Component {
     } = this.props
 
     const cardList = this.infos.map(info => {
-      const { title, linkName, link } = info
+      const { title, links } = info
       const attr = {
         className: cx(prefixShowCardCls, showCardCls),
         title
@@ -54,9 +86,18 @@ export default class ShowCardView extends Component {
         attr.key = title
         return (
           <Card {...attr}>
-            <a href={link} target="_blank">
-              {linkName}
-            </a>
+            {links.map((link, i) => {
+              return (
+                <div
+                  className={`${prefixShowCardCls}-innerItem`}
+                  key={link.link}
+                >
+                  <a href={link.link} target="_blank">
+                    {link.linkName}
+                  </a>
+                </div>
+              )
+            })}
           </Card>
         )
       }
